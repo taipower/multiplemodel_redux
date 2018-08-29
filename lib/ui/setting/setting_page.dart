@@ -47,11 +47,10 @@ class SettingPageContent extends StatelessWidget{
 
   _onAddProduct(BuildContext context, SettingPageViewModel viewModel){
     viewModel.openAddItemDialog();
-    Navigator.push<Null>(
-      context,
-      MaterialPageRoute(
-        builder: (_) => AddProductPage(),
-      ),
-    );
+    Navigator.of(context).push(new MaterialPageRoute(
+          builder: (BuildContext context){
+            return new AddProductPage();
+          }
+    ));
   }
 }
