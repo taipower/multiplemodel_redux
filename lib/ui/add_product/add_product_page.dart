@@ -4,11 +4,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:multiplemodel_redux/redux/app/app_state.dart';
-import 'package:multiplemodel_redux/ui/add_product/add_product_page_view_model.dart';
 import 'package:multiplemodel_redux/models/product.dart';
 import 'package:multiplemodel_redux/redux/add_product/add_product_action.dart';
 import 'package:multiplemodel_redux/redux/product/product_actions.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:typed_data';
 
 class AddProductPageViewModel{
   final Product entry;
@@ -34,6 +37,7 @@ class AddProductPageState extends State<AddProductPage>{
   TextEditingController _textControllerPrice;
   TextEditingController _textControllerNumber;
   Future<File> _imageFile;
+  String _path;
   VoidCallback listener;
 
   void _onImageButtonPressed(ImageSource source) {
@@ -61,6 +65,7 @@ class AddProductPageState extends State<AddProductPage>{
         builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.data != null) {
+            _path = snapshot.data.path;
             return Image.file(
               snapshot.data,
               height: 240.0,
@@ -80,6 +85,21 @@ class AddProductPageState extends State<AddProductPage>{
         });
   }
 
+  Future<Null> uploadFile(String filepath, String fileName) async {
+    final ByteData bytes = await rootBundle.load(filepath);
+    final Directory tempDir = Directory.systemTemp;
+    final File file = File('${tempDir.path}/$fileName');
+    file.writeAsBytes(bytes.buffer.asInt8List(), mode: FileMode.write);
+
+    ImageProperties properties = await FlutterNativeImage.getImageProperties(file.path);
+    File compressedFile = await FlutterNativeImage.compressImage(file.path, quality: 60,
+        targetWidth: 300, targetHeight: 600);
+
+
+    final StorageReference ref = FirebaseStorage.instance.ref().child(fileName);
+    final StorageUploadTask task = ref.putFile(compressedFile);
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -90,6 +110,10 @@ class AddProductPageState extends State<AddProductPage>{
               entry: activeProduct,
               onItemChanged: (entry) => store.dispatch(new UpdateActiveProductAction(entry)),
               onSavePressed: () {
+                DateTime dateTime = new DateTime.now();
+                String fileName = "${dateTime.millisecondsSinceEpoch.toString()}.jpg";
+                activeProduct.imgFile = fileName;
+                uploadFile(_path,fileName);
                 store.dispatch(new AddProductAction(activeProduct));
                 Navigator.of(context).pop();
               }

@@ -2,7 +2,7 @@ import 'package:multiplemodel_redux/models/product.dart';
 import 'package:multiplemodel_redux/redux/product_menu/product_menu_actions.dart';
 import 'package:redux/redux.dart';
 
-final productMenuRedicer = combineReducers<List<Product>>([
+final productMenuReducer = combineReducers<List<Product>>([
   TypedReducer<List<Product>, OnAddedProductListAction>(_addedProductList),
 ]);
 

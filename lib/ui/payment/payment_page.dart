@@ -10,7 +10,7 @@ import 'package:multiplemodel_redux/utils/utils.dart';
 import 'package:multiplemodel_redux/ui/thank_you/thank_you_page.dart';
 import 'package:multiplemodel_redux/redux/order/order_actions.dart';
 import 'package:multiplemodel_redux/redux/orderdetail/orderdetail_actions.dart';
-
+import 'package:multiplemodel_redux/redux/product/product_actions.dart';
 
 class DialogViewModel{
   final Order orderList;
@@ -36,6 +36,7 @@ class PaymentDialog extends StatefulWidget{
 
 class PaymentDialogState extends State<PaymentDialog>{
   final List<Product> cart;
+  List<Product> newListProduct;
   TextEditingController _textControllerName;
   TextEditingController _textControllerNumer;
   TextEditingController _textControllerExpire;
@@ -66,16 +67,18 @@ class PaymentDialogState extends State<PaymentDialog>{
     return new StoreConnector<AppState, DialogViewModel>(
         converter: (store){
           int number = 0;
+          int newNumber = 0;
           totalPrice = 0.0;
           dateTime = new DateTime.now();
           String orderKey = dateTime.millisecondsSinceEpoch.toString();
 
           List<OrderDetail> orderDetail = new List();
+          newListProduct = new List();
           cart.forEach((entry){
             number += entry.number;
             totalPrice += entry.price * double.parse(entry.number.toString());
             OrderDetail orderDetailEntry = new OrderDetail(orderKey,
-                new DateTime.now(), entry.name, entry.price, entry.number);
+                new DateTime.now(), entry.name, entry.price, entry.number, entry.imgFile);
             orderDetail.add(orderDetailEntry);
           });
           Order activeItem = new Order(dateTime, totalPrice, number);
@@ -120,6 +123,21 @@ class PaymentDialogState extends State<PaymentDialog>{
                   store.dispatch(new AddOrderAction(activeItem));
                   orderDetail.forEach((entry) => store.dispatch
                     (new AddOrderDetailAction(entry)));
+                  cart.forEach((entry){
+                    store.state.productEntry.forEach((product){
+                      if(entry.key == product.key){
+                        newNumber = product.number - entry.number;
+                        product.number = newNumber;
+                        Product newProduct = new Product(product.dateTime, product.name,
+                            product.price, product.number, product.imgFile);
+                        newProduct.key = product.key;
+                        newListProduct.add(newProduct);
+                        return;
+                      }
+                    });
+                  });
+                  newListProduct.forEach((product) => store.dispatch
+                    (new UpdateProductAction(product)));
                 }
               });
             },

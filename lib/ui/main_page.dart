@@ -40,7 +40,7 @@ class _MainPageState extends State<MainPage>
       body: TabBarView(
           controller: _controller,
           children: <Widget>[
-            const ProductsPage(),
+            const ProductPage(),
             const HistoryPage(),
           ],
       ),
@@ -57,10 +57,10 @@ class _MainPageState extends State<MainPage>
   }
 
   _openSettingsPage(BuildContext context){
-    Navigator.push<Null>(context,
-        MaterialPageRoute(
-          builder: (_) => SettingPage(),
-        ),
-    );
+    Navigator.of(context).push(new MaterialPageRoute(
+          builder: (BuildContext context){
+            return new SettingPage();
+          }
+    ));
   }
 }

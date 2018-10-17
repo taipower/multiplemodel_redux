@@ -7,8 +7,9 @@ class Product{
   String name;
   double price;
   int number;
+  String imgFile;
 
-  Product(this.dateTime, this.name, this.price, this.number);
+  Product(this.dateTime, this.name, this.price, this.number, this.imgFile);
 
   Product.fromSnapshot(DataSnapshot snapshot)
       : key = snapshot.key,
@@ -16,25 +17,28 @@ class Product{
         new DateTime.fromMicrosecondsSinceEpoch(snapshot.value["date"]),
         name = snapshot.value["name"],
         price = snapshot.value["price"].toDouble(),
-        number = snapshot.value["number"] as int;
+        number = snapshot.value["number"] as int,
+        imgFile = snapshot.value["imgFile"];
 
   Product.copy(Product product)
     : key = product.key,
       dateTime = new DateTime.fromMillisecondsSinceEpoch(product.dateTime.millisecondsSinceEpoch),
       name = product.name,
       price = product.price,
-      number = product.number;
+      number = product.number,
+      imgFile = product.imgFile;
 
-  Product._internal(this.key, this.dateTime, this.name, this.price, this.number);
+  Product._internal(this.key, this.dateTime, this.name, this.price, this.number, this.imgFile);
 
   Product copyWith(
-      {String key, DateTime dateTime, String name, double price, int number}){
+      {String key, DateTime dateTime, String name, double price, int number, String imgFile}){
     return new Product._internal(
         key ?? this.key,
         dateTime ?? this.dateTime,
         name ?? this.name,
         price ?? this.price,
-        number ?? this.number
+        number ?? this.number,
+        imgFile ?? this.imgFile
     );
   }
 
@@ -43,7 +47,8 @@ class Product{
       "name": name,
       "date": dateTime.millisecondsSinceEpoch,
       "price": price,
-      "number": number
+      "number": number,
+      "imgFile": imgFile,
     };
   }
 
@@ -58,5 +63,6 @@ class Product{
               .millisecondsSinceEpoch &&
           name == other.name &&
           price == other.price &&
-          number == other.number;
+          number == other.number &&
+          imgFile == other.imgFile;
 }

@@ -12,7 +12,7 @@ AddProductState _openAddProductDialog(AddProductState state, dynamic _){
   AddProductState newState = state;
 
   newState = newState.copyWith(
-      activeProduct: new Product(new DateTime.now(), '', 0.0, 0)
+      activeProduct: new Product(new DateTime.now(), '', 0.0, 0, '')
   );
 
   return newState;

@@ -40,10 +40,10 @@ class ProductListItem extends StatelessWidget{
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20.0
-              ),
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
     );
 
     return titleSection;

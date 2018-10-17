@@ -10,7 +10,7 @@ AppState appReducer(AppState state, dynamic action){
   return new AppState(
       firebaseState: firebaseReducer(state.firebaseState, action),
       productEntry: productReducer(state.productEntry, action),
-      productList: productMenuRedicer(state.productList, action),
+      productList: productMenuReducer(state.productList, action),
       orderEntry: orderReducer(state.orderEntry, action),
       orderDetailEntry: orderDetailReducer(state.orderDetailEntry, action),
       addProductState: addProductReducer(state.addProductState, action),
