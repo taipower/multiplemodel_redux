@@ -20,6 +20,7 @@ For help getting started with Flutter, view our online
 ## Dependencies
 - Firebase
 - Firebase Sign in
+- Store File Firebase
 - Redux
 
 ## Getting Run
