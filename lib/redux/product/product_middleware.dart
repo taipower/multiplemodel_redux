@@ -66,13 +66,20 @@ class ProductMiddleware extends MiddlewareClass<AppState>{
   }
 
   _handleUpdateProductAction(Store<AppState> store, UpdateProductAction action){
-    store.state.firebaseState.mainReference
+    print("action.product.key:"+action.product.key);
+    FirebaseDatabase.instance
+        .reference()
+        .child(store.state.firebaseState.firebaseUser.uid)
+        .child("product")
         .child(action.product.key)
         .set(action.product.toJson());
   }
 
   _handleRemoveProductAction(Store<AppState> store, RemoveProductAction action){
-    store.state.firebaseState.mainReference
+    FirebaseDatabase.instance
+        .reference()
+        .child(store.state.firebaseState.firebaseUser.uid)
+        .child("product")
         .child(action.product.key)
         .remove();
   }

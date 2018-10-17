@@ -8,8 +8,9 @@ class OrderDetail{
   String name;
   double price;
   int number;
+  String imgFile;
 
-  OrderDetail(this.keyOrder, this.dateTime, this.name, this.price, this.number);
+  OrderDetail(this.keyOrder, this.dateTime, this.name, this.price, this.number, this.imgFile);
 
   OrderDetail.fromSnapshot(DataSnapshot snapshot)
     : key = snapshot.key,
@@ -18,7 +19,8 @@ class OrderDetail{
       keyOrder = snapshot.value["keyOrder"],
       name = snapshot.value["name"],
       price = snapshot.value["price"].toDouble(),
-      number = snapshot.value["number"] as int;
+      number = snapshot.value["number"] as int,
+      imgFile = snapshot.value["imgFile"];
 
   OrderDetail.copy(OrderDetail orderDetail)
     : key = orderDetail.key,
@@ -26,10 +28,11 @@ class OrderDetail{
       keyOrder = orderDetail.keyOrder,
       name = orderDetail.name,
       price = orderDetail.price,
-      number = orderDetail.number;
+      number = orderDetail.number,
+      imgFile = orderDetail.imgFile;
 
   OrderDetail._internal(this.key, this.keyOrder, this.dateTime, this.name,
-      this.price, this.number);
+      this.price, this.number, this.imgFile);
 
   OrderDetail copyWith(
     {String key, String keyOrder, DateTime dateTime, String name, double price, int number}){
@@ -39,7 +42,8 @@ class OrderDetail{
         dateTime ?? this.dateTime,
         name ?? this.name,
         price ?? this.price,
-        number ?? this.number
+        number ?? this.number,
+        imgFile ?? this.imgFile,
     );
   }
 
@@ -49,7 +53,8 @@ class OrderDetail{
       "date": dateTime.millisecondsSinceEpoch,
       "name": name,
       "price": price,
-      "number": number
+      "number": number,
+      "imgFile": imgFile,
     };
   }
 
@@ -64,5 +69,6 @@ class OrderDetail{
       keyOrder == other.keyOrder &&
       name == other.name &&
       price == other.price &&
-      number == other.number;
+      number == other.number &&
+      imgFile == other.imgFile;
 }

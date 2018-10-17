@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:multiplemodel_redux/models/product.dart';
-import 'package:multiplemodel_redux/widgets/product_list_item.dart';
 import 'package:multiplemodel_redux/utils/utils.dart';
 import 'package:multiplemodel_redux/ui/payment/payment_page.dart';
+import 'package:multiplemodel_redux/widgets/product_grid.dart';
 
 class CartPage extends StatefulWidget{
   CartPage(this.cart);
@@ -31,27 +31,10 @@ class CartPageState extends State<CartPage>{
     // TODO: implement build
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("Cart"),
+        title: new Text("Total Cart : " + totalPrice.toString() + " Bath"),
       ),
-      body: new Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          new ListView.builder(
-              shrinkWrap: true,
-              itemCount: cart.length,
-              itemBuilder: (BuildContext context, index){
-                return new InkWell(
-                  onTap: null,
-                  child: new ProductListItem(cart[index]));
-              },
-          ),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              new Text("Total Price : " + totalPrice.toString() + " Bath"),
-            ],
-          ),
-        ],
+      body: ProductGrid(products: cart,
+        page: "CartPage",
       ),
       floatingActionButton: new FloatingActionButton(
           onPressed: () => _openPaymentPage(context),

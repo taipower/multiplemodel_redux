@@ -16,15 +16,6 @@ List<Product> _addedProduct(List<Product> entries, dynamic action){
   return entries;
 }
 
-List<Product> _addedProductList(List<Product> productList, dynamic action){
-  productList
-    ..add(new Product.fromSnapshot(action.event.snapshot))
-    ..sort((we1, we2) => we2.dateTime.compareTo(we1.dateTime));
-  productList.forEach((entry) => entry.number = 0);
-
-  return productList;
-}
-
 List<Product> _changedProduct(List<Product> entries, dynamic action){
   Product newValue = new Product.fromSnapshot(action.event.snapshot);
   Product oldValue = entries.singleWhere((entry) => entry.key == newValue.key);

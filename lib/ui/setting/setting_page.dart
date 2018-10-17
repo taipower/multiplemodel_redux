@@ -4,6 +4,7 @@ import 'package:multiplemodel_redux/redux/app/app_state.dart';
 import 'package:multiplemodel_redux/ui/setting/setting_page_view_model.dart';
 import 'package:multiplemodel_redux/widgets/product_list_item.dart';
 import 'package:multiplemodel_redux/ui/add_product/add_product_page.dart';
+import 'package:multiplemodel_redux/widgets/product_grid.dart';
 
 class SettingPage extends StatelessWidget{
   @override
@@ -28,14 +29,17 @@ class SettingPageContent extends StatelessWidget{
       appBar: new AppBar(
         title: Text('Setting'),
       ),
-      body: new ListView.builder(
-          shrinkWrap: true,
-          itemCount: viewModel.entries.length,
-          itemBuilder: (BuildContext context, index){
-            return new InkWell(
-              onTap: null,
-              child: new ProductListItem(viewModel.entries[index]));
-          },
+//      body: new ListView.builder(
+//          shrinkWrap: true,
+//          itemCount: viewModel.entries.length,
+//          itemBuilder: (BuildContext context, index){
+//            return new InkWell(
+//              onTap: null,
+//              child: new ProductListItem(viewModel.entries[index]));
+//          },
+//      ),
+      body: ProductGrid(products: viewModel.entries,
+        page: "SettingPage",
       ),
       floatingActionButton: new FloatingActionButton(
           onPressed: () => _onAddProduct(context, viewModel),
@@ -47,11 +51,10 @@ class SettingPageContent extends StatelessWidget{
 
   _onAddProduct(BuildContext context, SettingPageViewModel viewModel){
     viewModel.openAddItemDialog();
-    Navigator.push<Null>(
-      context,
-      MaterialPageRoute(
-        builder: (_) => AddProductPage(),
-      ),
-    );
+    Navigator.of(context).push(new MaterialPageRoute(
+          builder: (BuildContext context){
+            return new AddProductPage();
+          }
+    ));
   }
 }
