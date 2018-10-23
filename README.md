@@ -35,10 +35,29 @@ Once your Firebase instance is created, you'll need to enable anonymous authenti
 - Click "Authentication" in the left-hand menu.
 - Click the "sign-in method" tab.
 - Click "Anonymous" and enable it.
+- Config rules Realtime Database
+- {
+  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null"
+  }
+}
+- Config rules storage firebase
+- service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+
+-
 3.1 Running on Android
 - Create an app within your Firebase instance for Android, with package name com.taipower.multiplemodelredux .
 - Download google-services.json . 
 - place google-services.json into multiplemodel_redux/android/app/.
+-
 3.2 Running on IOS
 - Create an app within your Firebase instance for iOS, with package name com.yourcompany.news
 - Follow instructions to download GoogleService-Info.plist, and place it into newsbuzz/ios/Runner in XCode
