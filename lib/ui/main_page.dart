@@ -58,9 +58,9 @@ class _MainPageState extends State<MainPage>
 
   _openSettingsPage(BuildContext context){
     Navigator.of(context).push(new MaterialPageRoute(
-          builder: (BuildContext context){
-            return new SettingPage();
-          }
+        builder: (BuildContext context){
+          return new SettingPage();
+        }
     ));
   }
 }
