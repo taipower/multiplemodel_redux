@@ -30,11 +30,11 @@ For help getting started with Flutter, view our online
 - cd multiplemodel_redux
 3. Setup Firebase
 - You'll need to create a Firebase instance. Follow the instructions at https://console.firebase.google.com.
-Once your Firebase instance is created, you'll need to enable anonymous authentication.
+Once your Firebase instance is created, you'll need to enable google account authentication.
 - Go to the Firebase Console for your new instance.
 - Click "Authentication" in the left-hand menu.
 - Click the "sign-in method" tab.
-- Click "Anonymous" and enable it.
+- Click "Google" and enable it.
 - Config rules Realtime Database
 - {
   /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
@@ -55,6 +55,7 @@ Once your Firebase instance is created, you'll need to enable anonymous authenti
 -
 3.1 Running on Android
 - Create an app within your Firebase instance for Android, with package name com.taipower.multiplemodelredux .
+- Set SHA-1
 - Download google-services.json . 
 - place google-services.json into multiplemodel_redux/android/app/.
 -
