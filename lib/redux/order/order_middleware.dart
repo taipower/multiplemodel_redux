@@ -24,36 +24,36 @@ class OrderMiddleware extends MiddlewareClass<AppState>{
   }
 
   _handleUserLoadedAction(Store<AppState> store){
-    store.dispatch(new AddDatabaseReferenceAction(FirebaseDatabase.instance
-        .reference()
-        .child(store.state.firebaseState.firebaseUser.uid)
-        .child("order")
-      ..onChildAdded
-          .listen((event) => store.dispatch(new OnAddedOrderAction(event)))
-    )
-    );
+    if(store.state.firebaseState.firebaseUser != null){
+      store.dispatch(new AddDatabaseReferenceAction(FirebaseDatabase.instance
+          .reference()
+          .child(store.state.firebaseState.firebaseUser.uid)
+          .child("order")
+        ..onChildAdded
+            .listen((event) => store.dispatch(new OnAddedOrderAction(event)))
+      )
+      );
+    }
   }
 
   _handleInitAction(Store<AppState> store){
-    if(store.state.firebaseState.firebaseUser == null){
+    if(FirebaseAuth.instance != null){
       FirebaseAuth.instance.currentUser().then((user){
         if(user != null){
           store.dispatch(new UserLoadedAction(user));
-        }else{
-          FirebaseAuth.instance
-              .signInAnonymously()
-              .then((user) => store.dispatch(new UserLoadedAction(user)));
         }
       });
     }
   }
 
   _handleAddOrderAction(Store<AppState> store, AddOrderAction action){
-    FirebaseDatabase.instance
-        .reference()
-        .child(store.state.firebaseState.firebaseUser.uid)
-        .child("order")
-        .push()
-        .set(action.order.toJson());
+    if(store.state.firebaseState.firebaseUser != null){
+      FirebaseDatabase.instance
+          .reference()
+          .child(store.state.firebaseState.firebaseUser.uid)
+          .child("order")
+          .push()
+          .set(action.order.toJson());
+    }
   }
 }

@@ -7,10 +7,17 @@ final productMenuReducer = combineReducers<List<Product>>([
 ]);
 
 List<Product> _addedProductList(List<Product> productList, dynamic action){
-  productList
-    ..add(new Product.fromSnapshot(action.event.snapshot))
-    ..sort((we1, we2) => we2.dateTime.compareTo(we1.dateTime));
-  productList.forEach((entry) => entry.number = 0);
+  Product product = new Product.fromSnapshot(action.event.snapshot);
+  bool duplicate = false;
+  productList.forEach((entry){
+       if(product.key == entry.key) duplicate = true;
+  });
+  if(!duplicate){
+    productList
+      ..add(new Product.fromSnapshot(action.event.snapshot))
+      ..sort((we1, we2) => we2.dateTime.compareTo(we1.dateTime));
+    productList.forEach((entry) => entry.number = 0);
+  }
 
   return productList;
 }

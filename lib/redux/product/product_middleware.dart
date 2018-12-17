@@ -43,44 +43,45 @@ class ProductMiddleware extends MiddlewareClass<AppState>{
   }
 
   _handleInitAction(Store<AppState> store){
-    if(store.state.firebaseState.firebaseUser == null){
+    if(FirebaseAuth.instance != null){
       FirebaseAuth.instance.currentUser().then((user){
         if(user != null){
           store.dispatch(new UserLoadedAction(user));
-        }else{
-          FirebaseAuth.instance
-              .signInAnonymously()
-              .then((user) => store.dispatch(new UserLoadedAction(user)));
         }
       });
     }
   }
 
   _handleAddProductAction(Store<AppState> store, AddProductAction action){
-    FirebaseDatabase.instance
-        .reference()
-        .child(store.state.firebaseState.firebaseUser.uid)
-        .child("product")
-        .push()
-        .set(action.product.toJson());
+    if(store.state.firebaseState.firebaseUser != null){
+      FirebaseDatabase.instance
+          .reference()
+          .child(store.state.firebaseState.firebaseUser.uid)
+          .child("product")
+          .push()
+          .set(action.product.toJson());
+    }
   }
 
   _handleUpdateProductAction(Store<AppState> store, UpdateProductAction action){
-    print("action.product.key:"+action.product.key);
-    FirebaseDatabase.instance
-        .reference()
-        .child(store.state.firebaseState.firebaseUser.uid)
-        .child("product")
-        .child(action.product.key)
-        .set(action.product.toJson());
+    if(store.state.firebaseState.firebaseUser != null){
+      FirebaseDatabase.instance
+          .reference()
+          .child(store.state.firebaseState.firebaseUser.uid)
+          .child("product")
+          .child(action.product.key)
+          .set(action.product.toJson());
+    }
   }
 
   _handleRemoveProductAction(Store<AppState> store, RemoveProductAction action){
-    FirebaseDatabase.instance
-        .reference()
-        .child(store.state.firebaseState.firebaseUser.uid)
-        .child("product")
-        .child(action.product.key)
-        .remove();
+    if(store.state.firebaseState.firebaseUser != null){
+      FirebaseDatabase.instance
+          .reference()
+          .child(store.state.firebaseState.firebaseUser.uid)
+          .child("product")
+          .child(action.product.key)
+          .remove();
+    }
   }
 }

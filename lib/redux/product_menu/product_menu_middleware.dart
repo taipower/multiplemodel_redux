@@ -32,14 +32,10 @@ class ProductMenuMiddleware extends MiddlewareClass<AppState>{
   }
 
   _handleInitAction(Store<AppState> store){
-    if(store.state.firebaseState.firebaseUser == null){
+    if(FirebaseAuth.instance != null){
       FirebaseAuth.instance.currentUser().then((user){
         if(user != null){
           store.dispatch(new UserLoadedAction(user));
-        }else{
-          FirebaseAuth.instance
-              .signInAnonymously()
-              .then((user) => store.dispatch(new UserLoadedAction(user)));
         }
       });
     }

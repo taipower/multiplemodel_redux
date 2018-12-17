@@ -7,9 +7,16 @@ final orderReducer = combineReducers<List<Order>>([
 ]);
 
 List<Order> _addedOrder(List<Order> orderEntry, dynamic action){
-  orderEntry
-    ..add(new Order.fromSnapshot(action.event.snapshot))
-    ..sort((we1, we2) => we2.dateTime.compareTo(we1.dateTime));
+  Order order = new Order.fromSnapshot(action.event.snapshot);
+  bool duplicate = false;
+  orderEntry.forEach((entry){
+    if(order.key == entry.key) duplicate = true;
+  });
+  if(!duplicate){
+    orderEntry
+      ..add(new Order.fromSnapshot(action.event.snapshot))
+      ..sort((we1, we2) => we2.dateTime.compareTo(we1.dateTime));
+  }
 
   return orderEntry;
 }

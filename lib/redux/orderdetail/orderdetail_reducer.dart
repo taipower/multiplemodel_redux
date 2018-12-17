@@ -7,9 +7,16 @@ final orderDetailReducer = combineReducers<List<OrderDetail>>([
 ]);
 
 List<OrderDetail> _addedOrderDetail(List<OrderDetail> orderDetailEntry, dynamic action){
-  orderDetailEntry
-    ..add(new OrderDetail.fromSnapshot(action.event.snapshot))
-    ..sort((we1, we2) => we2.dateTime.compareTo(we1.dateTime));
+  OrderDetail orderDetail = new OrderDetail.fromSnapshot(action.event.snapshot);
+  bool duplicate = false;
+  orderDetailEntry.forEach((entry){
+    if(orderDetail.key == entry.key) duplicate = true;
+  });
+  if(!duplicate){
+    orderDetailEntry
+      ..add(new OrderDetail.fromSnapshot(action.event.snapshot))
+      ..sort((we1, we2) => we2.dateTime.compareTo(we1.dateTime));
+  }
 
   return orderDetailEntry;
 }

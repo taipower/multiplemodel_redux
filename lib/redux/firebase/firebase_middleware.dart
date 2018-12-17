@@ -16,14 +16,10 @@ class FirebaseMiddleware extends MiddlewareClass<AppState>{
   }
 
   _handleInitAction(Store<AppState> store){
-    if(store.state.firebaseState.firebaseUser == null){
+    if(FirebaseAuth.instance != null){
       FirebaseAuth.instance.currentUser().then((user){
         if(user != null){
           store.state.firebaseState.firebaseUser = user;
-        }else{
-          FirebaseAuth.instance
-              .signInAnonymously()
-              .then((user) => store.state.firebaseState.firebaseUser = user);
         }
       });
     }
