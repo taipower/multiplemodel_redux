@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multiplemodel_redux/models/product.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class Utils{
   static bool checkStock(int value, String key, List<Product> entries){
@@ -101,6 +103,18 @@ class Utils{
     }
 
     return successful;
+  }
+
+  static Future<FirebaseUser> authenticateWithGoogle(GoogleSignIn googleSignIn,
+      FirebaseAuth auth) async{
+      final GoogleSignInAccount googleUser = await googleSignIn.signIn();
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final FirebaseUser user = await auth.signInWithGoogle(
+        idToken: googleAuth.idToken,
+        accessToken: googleAuth.accessToken
+      );
+
+      return user;
   }
 
 

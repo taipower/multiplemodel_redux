@@ -9,9 +9,16 @@ final productReducer = combineReducers<List<Product>>([
 ]);
 
 List<Product> _addedProduct(List<Product> entries, dynamic action){
-  entries
-    ..add(new Product.fromSnapshot(action.event.snapshot))
-    ..sort((we1, we2) => we2.dateTime.compareTo(we1.dateTime));
+  Product product = new Product.fromSnapshot(action.event.snapshot);
+  bool duplicate = false;
+  entries.forEach((entry){
+    if(product.key == entry.key) duplicate = true;
+  });
+  if(!duplicate){
+    entries
+      ..add(new Product.fromSnapshot(action.event.snapshot))
+      ..sort((we1, we2) => we2.dateTime.compareTo(we1.dateTime));
+  }
 
   return entries;
 }
